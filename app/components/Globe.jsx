@@ -7,18 +7,16 @@ const GlobeMap = () => {
   const [map, setMap] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    if (!map) { // Check if map is already initialized
-      const initMap = () => {
-        const mapInstance = L.map('map-container').setView([0, 0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(mapInstance);
-        setMap(mapInstance); // Update state with the map instance
-      };
-      initMap();
+useEffect(() => {
+    // Initialize map only if it's not already initialized
+    if (!document.getElementById('map-container').classList.contains('leaflet-container')) {
+      const mapInstance = L.map('map-container').setView([0, 0], 2);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(mapInstance);
     }
-  }, [map]); // Only run this effect when map state changes
+  }, []); 
+    // Only run this effect when map state changes
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
