@@ -1,10 +1,11 @@
 import Image from "next/image";
-import GlobeMap from "./components/Globe";
+import Map from "./components/Map";
+
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <GlobeMap />
+    <main className="flex h-screen w-screen flex-col items-center">
+      <Map />
     </main>
   );
 }
