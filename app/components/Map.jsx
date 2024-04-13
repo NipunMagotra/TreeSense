@@ -7,6 +7,8 @@ import street from '../../public/street.png';
 
 const Map = () => {
   const [map, setMap] = useState(null);
+  const [zoomLevel, setZoomLevel] = useState(2); // Initial zoom level
+
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedStyle, setSelectedStyle] = useState('satellite-v9');
@@ -30,10 +32,11 @@ const Map = () => {
       container: mapContainerRef.current,
       style: `mapbox://styles/mapbox/${selectedStyle}`,
       center: [80, 20],
-      zoom: 2,
+      zoom: zoomLevel,
+      
       projection: 'globe',
     });
-  
+  console.log(map.zoom)
     map.on('style.load', () => {
       map.setFog({
         color: 'rgb(186, 210, 235)',
@@ -57,10 +60,21 @@ const Map = () => {
       clearInterval(intervalRef.current);
       map.off('click', stopRotationOnClick);
     };
-  
+    
+    map.on('zoom', () => {
+      setZoomLevel(map.getZoom());
+    });
+
+
     map.on('click', stopRotationOnClick);
   
     return () => {
+      
+        // Cleanup: remove event listener on unmount
+        map.off('zoom', () => {
+          setZoomLevel(mapInstance.getZoom());
+        });
+     
       clearInterval(intervalRef.current);
       map.off('click', stopRotationOnClick);
     };
@@ -182,6 +196,9 @@ const Map = () => {
               <div key={index} onClick={() => handleResultClick(result)} className="cursor-pointer hover:bg-gray-200 px-3 py-2 border-b bg-white border-gray-300">{result.place_name}</div>
             ))}
           </div>
+        </div>
+        <div className="absolute bottom-4 left-4 text-2xl bg-white p-2 rounded shadow-md text-black">
+          Zoom Level: {zoomLevel.toFixed(2)}
         </div>
         <div className='absolute right-0 top-0' >
 <MapStyleSelector mapStyles={mapStyles} selectedStyle={selectedStyle} handleStyleChange={handleStyleChange}/>
