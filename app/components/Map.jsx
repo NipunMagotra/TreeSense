@@ -197,7 +197,7 @@ const Map = () => {
             ))}
           </div>
         </div>
-        <div className="absolute bottom-4 left-4 text-2xl bg-white p-2 rounded shadow-md text-black">
+        <div className="absolute bottom-4 left-4 text-2xl bg-white p-2 rounded shadow-md text-black z-50">
           Zoom Level: {zoomLevel.toFixed(2)}
         </div>
         <div className='absolute right-0 top-0' >
